@@ -12,14 +12,7 @@ This is the first piece of code I wrote (adapted) in C#, so it's probably not fo
 
 Some screenshots from the Android version of the game:
 
-Starting the Game:
-https://github.com/derefer/MemoryGame/blob/master/screenshot1.jpg
-
-In the Middle of the Game:
-https://github.com/derefer/MemoryGame/screenshot2.jpg
-
-In the Middle of the Game with two Puzzles Facing Upwards:
-https://github.com/derefer/MemoryGame/screenshot3.jpg
-
-The Dialog Panel at the End of the Game:
-https://github.com/derefer/MemoryGame/screenshot3.jpg
+![alt text](screenshot1.jpg "Starting the Game")
+![alt text](screenshot2.jpg "In the Middle of the Game")
+![alt text](screenshot3.jpg "In the Middle of the Game with two Puzzles Facing Upwards")
+![alt text](screenshot3.jpg "The Dialog Panel at the End of the Game")
