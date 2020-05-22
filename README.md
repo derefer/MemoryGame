@@ -13,7 +13,7 @@ This is the first piece of code I wrote (adapted) in C#, so it's probably not fo
 Some screenshots from the Android version of the game:
 
 Starting the Game:
-https://github.com/derefer/MemoryGame/screenshot1.jpg
+https://github.com/derefer/MemoryGame/blob/master/screenshot1.jpg
 
 In the Middle of the Game:
 https://github.com/derefer/MemoryGame/screenshot2.jpg
