@@ -15,4 +15,4 @@ Some screenshots from the Android version of the game:
 ![alt text](screenshot1.jpg "Starting the Game")
 ![alt text](screenshot2.jpg "In the Middle of the Game")
 ![alt text](screenshot3.jpg "In the Middle of the Game with two Puzzles Facing Upwards")
-![alt text](screenshot3.jpg "The Dialog Panel at the End of the Game")
+![alt text](screenshot4.jpg "The Dialog Panel at the End of the Game")
