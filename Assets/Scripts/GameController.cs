@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private Sprite backImage;
     [SerializeField] private GameObject exitPanel;
+    [SerializeField] private GameObject panelImage; // TODO: Better naming
+    [SerializeField] private GameObject panelPuzzleField; // TODO: Better naming
     [SerializeField] private Transform puzzleField;
     [SerializeField] private GameObject buttonPrefab;
     [SerializeField] TextMeshProUGUI timerText, movesText;
@@ -149,15 +152,17 @@ public class GameController : MonoBehaviour
         countCorrectGuesses++;
         if (countCorrectGuesses == NUM_OF_GAME_GUESSES) {
             gameIsFinished = true;
+            // This will not work if the UI element is not active...
+            string timerText = GameObject.Find("Canvas/PanelImage/TimerText").GetComponent<TextMeshProUGUI>().text.ToString();
             exitPanel.SetActive(true);
-            string message = "Game finished!\nIt took you <b>" + countGuesses + "</b> guesses to finish the game."; 
-            Debug.Log(message);
-            GameObject.Find("Canvas/PanelExit/FinishedText").GetComponent<TextMeshProUGUI>().text = message;
+            panelImage.SetActive(false);
+            panelPuzzleField.SetActive(false);
+            StringBuilder stringBuilder = new StringBuilder("Well done!\n\nIt took you\n<b>");
+            stringBuilder.Append(countGuesses);
+            stringBuilder.Append("</b> move(s) and <b>");
+            stringBuilder.Append(timerText);
+            stringBuilder.Append("</b> time\nto finish the game.");
+            GameObject.Find("Canvas/PanelFinished/FinishedText").GetComponent<TextMeshProUGUI>().text = stringBuilder.ToString();
         }
-    }
-
-    public void Replay()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
