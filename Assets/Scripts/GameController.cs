@@ -2,76 +2,103 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private Sprite bgImage;
-    [SerializeField] GameObject exitPanel;
+    // It looks better if it's a square like 4x4...
+    private const int NUM_OF_BUTTONS = 16;
+    private const int NUM_OF_GAME_GUESSES = NUM_OF_BUTTONS / 2;
+
+    [SerializeField] private Sprite backImage;
+    [SerializeField] private GameObject exitPanel;
     [SerializeField] private Transform puzzleField;
-    [SerializeField] private GameObject btn;
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] TextMeshProUGUI timerText, movesText;
 
-    public Sprite[] puzzles;
-
-    public List<Sprite> gamePuzzles = new List<Sprite>();
-
-    public List<Button> btns = new List<Button>();
+    private Sprite[] puzzles;
+    private List<Sprite> gamePuzzles = new List<Sprite>();
+    private List<Button> buttons = new List<Button>();
 
     private bool firstGuess, secondGuess;
 
     private int countGuesses;
     private int countCorrectGuesses;
-    private int gameGuesses;
     private int firstGuessIndex, secondGuessIndex;
 
     private string firstGuessPuzzle, secondGuessPuzzle;
 
-    void Awake()
-    {
-        for (int i = 0; i < 18; i++) {
-            GameObject button = Instantiate(btn);
-            button.name = "" + i;
-            button.transform.SetParent(puzzleField, false);
-        }
+    private float startTime;
 
+    private bool gameIsFinished;
+
+    private void Start()
+    {
+        LoadSprites();
+        InitButtons();
+        InitPuzzles();
+        ShufflePuzzles();
+
+        startTime = Time.time;
+        gameIsFinished = false;
+    }
+
+    private void Update()
+    {
+        if (!gameIsFinished) {
+            UpdateTimer();
+        }
+    }
+
+    private void UpdateTimer()
+    {
+        float deltaT = Time.time - startTime;
+        int minutesInt = (int)deltaT / 60;
+        int secondsInt = (int)deltaT % 60;
+        string minutesString = ((minutesInt < 10) ? "0" : "") + minutesInt.ToString();
+        string secondsString = ((secondsInt < 10) ? "0" : "") + secondsInt.ToString("f0");
+        timerText.text = minutesString + ":" + secondsString;
+    }
+
+    private void LoadSprites()
+    {
+        // Strange, but the "Resources" folder seems to be some kind of Unity convention...
         puzzles = Resources.LoadAll<Sprite>("Sprites/MemorySprites");
     }
 
-    void Start()
+    private void InitButtons()
     {
-        GetButtons();
-        AddListeners();
-        AddGamePuzzles();
-        Shuffle(gamePuzzles);
-        gameGuesses = gamePuzzles.Count / 2;
-    }
-
-    void GetButtons()
-    {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("PuzzleButton");
-        for (int i = 0; i < objects.Length; i++) {
-            btns.Add(objects[i].GetComponent<Button>());
-            btns[i].image.sprite = bgImage;
+        for (int i = 0; i < NUM_OF_BUTTONS; ++i) {
+            GameObject buttonGameObject = Instantiate(buttonPrefab);
+            buttonGameObject.name = "" + i;
+            buttonGameObject.transform.SetParent(puzzleField, false);
+            Button button = buttonGameObject.GetComponent<Button>();
+            button.image.sprite = backImage;
+            button.onClick.AddListener(() => PickAPuzzle());
+            buttons.Add(button);
         }
     }
 
-    void AddGamePuzzles()
+    private void InitPuzzles()
     {
-        int looper = btns.Count;
-        int index = 0;
-        for (int i = 0; i < looper; i++) {
-            if (index == looper / 2) {
-                index = 0;
+        int j = 0;
+        for (int i = 0; i < NUM_OF_BUTTONS; ++i) {
+            if (j == NUM_OF_BUTTONS / 2) {
+                j = 0;
             }
-            gamePuzzles.Add(puzzles[index + 1]);
-            index++;
+            gamePuzzles.Add(puzzles[j + 1]);
+            ++j;
         }
     }
 
-    void AddListeners()
+    private void ShufflePuzzles()
     {
-        foreach (Button btn in btns) {
-            btn.onClick.AddListener(() => PickAPuzzle());
+        for (int i = 0; i < NUM_OF_BUTTONS; ++i) {
+            Sprite temp = gamePuzzles[i];
+            int randomIndex = Random.Range(i, NUM_OF_BUTTONS);
+            gamePuzzles[i] = gamePuzzles[randomIndex];
+            gamePuzzles[randomIndex] = temp;
         }
     }
 
@@ -83,7 +110,7 @@ public class GameController : MonoBehaviour
             firstGuessIndex = int.Parse(name);
             firstGuess = true;
             firstGuessPuzzle = gamePuzzles[firstGuessIndex].name;
-            btns[firstGuessIndex].image.sprite = gamePuzzles[firstGuessIndex];
+            buttons[firstGuessIndex].image.sprite = gamePuzzles[firstGuessIndex];
         } else if (!secondGuess) {
             secondGuessIndex = int.Parse(name);
             // Avoid double-clicking the same puzzle
@@ -92,58 +119,45 @@ public class GameController : MonoBehaviour
             }
             secondGuess = true;
             secondGuessPuzzle = gamePuzzles[secondGuessIndex].name;
-            btns[secondGuessIndex].image.sprite = gamePuzzles[secondGuessIndex];
+            buttons[secondGuessIndex].image.sprite = gamePuzzles[secondGuessIndex];
             countGuesses++;
+            movesText.text = countGuesses.ToString();
             StartCoroutine(CheckIfThePuzzlesMatch());
         }
     }
 
-    IEnumerator CheckIfThePuzzlesMatch()
+    private IEnumerator CheckIfThePuzzlesMatch()
     {
-        yield return new WaitForSeconds (.5f);
+        yield return new WaitForSeconds(.5f);
         if (firstGuessPuzzle == secondGuessPuzzle) {
-            yield return new WaitForSeconds (.1f);
-            btns[firstGuessIndex].interactable = false;
-            btns[secondGuessIndex].interactable = false;
-            btns[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
-            btns[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
+            yield return new WaitForSeconds(.1f);
+            buttons[firstGuessIndex].interactable = false;
+            buttons[secondGuessIndex].interactable = false;
+            buttons[firstGuessIndex].image.color = new Color(0, 0, 0, 0);
+            buttons[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
             CheckIfTheGameIsFinished();
         } else {
             yield return new WaitForSeconds (.5f);
-            btns[firstGuessIndex].image.sprite = bgImage;
-            btns[secondGuessIndex].image.sprite = bgImage;
+            buttons[firstGuessIndex].image.sprite = backImage;
+            buttons[secondGuessIndex].image.sprite = backImage;
         }
         firstGuess = secondGuess = false;
     }
 
-    void CheckIfTheGameIsFinished()
+    private void CheckIfTheGameIsFinished()
     {
         countCorrectGuesses++;
-        if (countCorrectGuesses == gameGuesses) {
+        if (countCorrectGuesses == NUM_OF_GAME_GUESSES) {
+            gameIsFinished = true;
             exitPanel.SetActive(true);
             string message = "Game finished!\nIt took you <b>" + countGuesses + "</b> guesses to finish the game."; 
             Debug.Log(message);
-            GameObject.Find("Canvas/Panel Exit/Text").GetComponent<Text>().text = message;
-        }
-    }
-
-    void Shuffle(List<Sprite> list)
-    {
-        for (int i = 0; i < list.Count; i++) {
-            Sprite temp = list[i];
-            int randomIndex = Random.Range(i, list.Count);
-            list[i] = list[randomIndex];
-            list[randomIndex] = temp;
+            GameObject.Find("Canvas/PanelExit/FinishedText").GetComponent<TextMeshProUGUI>().text = message;
         }
     }
 
     public void Replay()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void Exit()
-    {
-        Application.Quit();
     }
 }
