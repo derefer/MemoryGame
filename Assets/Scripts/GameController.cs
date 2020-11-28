@@ -13,7 +13,8 @@ public class GameController : MonoBehaviour
     private const int NUM_OF_GAME_GUESSES = NUM_OF_BUTTONS / 2;
 
     [SerializeField] private Sprite backImage;
-    [SerializeField] private GameObject exitPanel;
+    [SerializeField] private GameObject panelFinished; // TODO: Better naming
+    [SerializeField] private GameObject panelPaused; // TODO: Better naming
     [SerializeField] private GameObject panelImage; // TODO: Better naming
     [SerializeField] private GameObject panelPuzzleField; // TODO: Better naming
     [SerializeField] private Transform puzzleField;
@@ -34,7 +35,7 @@ public class GameController : MonoBehaviour
 
     private float startTime;
 
-    private bool gameIsFinished;
+    private bool isGameFinished, isGamePaused;
 
     private void Start()
     {
@@ -43,13 +44,14 @@ public class GameController : MonoBehaviour
         InitPuzzles();
         ShufflePuzzles();
 
+        Time.timeScale = 1f;
         startTime = Time.time;
-        gameIsFinished = false;
+        isGameFinished = isGamePaused = false;
     }
 
     private void Update()
     {
-        if (!gameIsFinished) {
+        if (!isGameFinished && !isGamePaused) {
             UpdateTimer();
         }
     }
@@ -151,10 +153,10 @@ public class GameController : MonoBehaviour
     {
         countCorrectGuesses++;
         if (countCorrectGuesses == NUM_OF_GAME_GUESSES) {
-            gameIsFinished = true;
+            isGameFinished = true;
             // This will not work if the UI element is not active...
             string timerText = GameObject.Find("Canvas/PanelImage/TimerText").GetComponent<TextMeshProUGUI>().text.ToString();
-            exitPanel.SetActive(true);
+            panelFinished.SetActive(true);
             panelImage.SetActive(false);
             panelPuzzleField.SetActive(false);
             StringBuilder stringBuilder = new StringBuilder("Well done!\n\nIt took you\n<b>");
@@ -164,5 +166,23 @@ public class GameController : MonoBehaviour
             stringBuilder.Append("</b> time\nto finish the game.");
             GameObject.Find("Canvas/PanelFinished/FinishedText").GetComponent<TextMeshProUGUI>().text = stringBuilder.ToString();
         }
+    }
+
+    public void OnPause()
+    {
+        panelPaused.SetActive(true);
+        panelImage.SetActive(false);
+        panelPuzzleField.SetActive(false);
+        Time.timeScale = 0f; // Freeze the game
+        isGamePaused = true;
+    }
+
+    public void OnResume()
+    {
+        panelPaused.SetActive(false);
+        panelImage.SetActive(true);
+        panelPuzzleField.SetActive(true);
+        Time.timeScale = 1f;
+        isGamePaused = false;
     }
 }
