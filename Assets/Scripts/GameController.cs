@@ -59,11 +59,16 @@ public class GameController : MonoBehaviour
     private void UpdateTimer()
     {
         float deltaT = Time.time - startTime;
-        int minutesInt = (int)deltaT / 60;
-        int secondsInt = (int)deltaT % 60;
-        string minutesString = ((minutesInt < 10) ? "0" : "") + minutesInt.ToString();
-        string secondsString = ((secondsInt < 10) ? "0" : "") + secondsInt.ToString("f0");
-        timerText.text = minutesString + ":" + secondsString;
+        int minutes = (int)deltaT / 60;
+        int seconds = (int)deltaT % 60;
+        timerText.text = GetTimeAsString(minutes, seconds);
+    }
+
+    private string GetTimeAsString(int minutes, int seconds)
+    {
+        string minutesString = ((minutes < 10) ? "0" : "") + minutes.ToString();
+        string secondsString = ((seconds < 10) ? "0" : "") + seconds.ToString("f0");
+        return minutesString + ":" + secondsString;
     }
 
     private void LoadSprites()
@@ -74,15 +79,21 @@ public class GameController : MonoBehaviour
 
     private void InitButtons()
     {
-        for (int i = 0; i < NUM_OF_BUTTONS; ++i) {
-            GameObject buttonGameObject = Instantiate(buttonPrefab);
-            buttonGameObject.name = "" + i;
-            buttonGameObject.transform.SetParent(puzzleField, false);
-            Button button = buttonGameObject.GetComponent<Button>();
-            button.image.sprite = backImage;
-            button.onClick.AddListener(() => PickAPuzzle());
+        for (int buttonId = 0; buttonId < NUM_OF_BUTTONS; ++buttonId) {
+            Button button = CreateButton(buttonId);
             buttons.Add(button);
         }
+    }
+
+    private Button CreateButton(int buttonId)
+    {
+        GameObject buttonGameObject = Instantiate(buttonPrefab);
+        buttonGameObject.name = buttonId.ToString();
+        buttonGameObject.transform.SetParent(puzzleField, false);
+        Button button = buttonGameObject.GetComponent<Button>();
+        button.image.sprite = backImage;
+        button.onClick.AddListener(() => PickAPuzzle());
+        return button;
     }
 
     private void InitPuzzles()
@@ -142,7 +153,7 @@ public class GameController : MonoBehaviour
             buttons[secondGuessIndex].image.color = new Color(0, 0, 0, 0);
             CheckIfTheGameIsFinished();
         } else {
-            yield return new WaitForSeconds (.5f);
+            yield return new WaitForSeconds(.5f);
             buttons[firstGuessIndex].image.sprite = backImage;
             buttons[secondGuessIndex].image.sprite = backImage;
         }
@@ -154,18 +165,24 @@ public class GameController : MonoBehaviour
         countCorrectGuesses++;
         if (countCorrectGuesses == NUM_OF_GAME_GUESSES) {
             isGameFinished = true;
-            // This will not work if the UI element is not active...
-            string timerText = GameObject.Find("Canvas/PanelImage/TimerText").GetComponent<TextMeshProUGUI>().text.ToString();
+            // The order matters! TimerText must be active at this point.
+            string finishedText = CreateFinishedText();
             panelFinished.SetActive(true);
             panelImage.SetActive(false);
             panelPuzzleField.SetActive(false);
-            StringBuilder stringBuilder = new StringBuilder("Well done!\n\nIt took you\n<b>");
-            stringBuilder.Append(countGuesses);
-            stringBuilder.Append("</b> move(s) and <b>");
-            stringBuilder.Append(timerText);
-            stringBuilder.Append("</b> time\nto finish the game.");
-            GameObject.Find("Canvas/PanelFinished/FinishedText").GetComponent<TextMeshProUGUI>().text = stringBuilder.ToString();
+            GameObject.Find("Canvas/PanelFinished/FinishedText").GetComponent<TextMeshProUGUI>().text = finishedText;
         }
+    }
+
+    private string CreateFinishedText()
+    {
+        string timerText = GameObject.Find("Canvas/PanelImage/TimerText").GetComponent<TextMeshProUGUI>().text.ToString();
+        StringBuilder stringBuilder = new StringBuilder("Well done!\n\nIt took you\n<b>");
+        stringBuilder.Append(countGuesses);
+        stringBuilder.Append("</b> move(s) and <b>");
+        stringBuilder.Append(timerText);
+        stringBuilder.Append("</b> time\nto finish the game.");
+        return stringBuilder.ToString();
     }
 
     public void OnPause()
