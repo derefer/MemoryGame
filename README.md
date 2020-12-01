@@ -1,19 +1,26 @@
 # MemoryGame
-Basic memory game in Unity
+Mushroom Memo - A basic memory game in Unity
 
 The project was based on this tutorial from "Awesome Tuts": https://www.youtube.com/watch?v=qaCjBh7bWz0&list=PLZhNP5qJ2IA2DA4bzDyxFMs8yogVQSrjW
 
-Additional changes compared to the tutorial:
+Additional changes compared to the original tutorial:
   * Fix bug when clicking the same puzzle twice
-  * Make it possible to pause/resume or quit the game while playing
-  * Make it possible to replay or quit the game in the end
-  * Extend the board from 8 to 18 puzzles using my own photos
+  * Extend the board from 8 to 16 puzzles
+  * Add background images
+  * Add a main menu screen for easier navigation
+  * Add ability to quit the game from the main menu screen
+  * Make it possible to pause, resume, restart the game or return to the main menu while playing
+  * Show the elapsed time
+  * Count the number of moves
+  * Make it possible to play again or return to the main menu when the game is finished
 
-This is the first piece of code I wrote (adapted) in C#, so it's probably not following the best practices.
+This is the first piece of code I wrote (and adapted) in C#, so it's probably not following the best practices. I will try to improve it as I learn more.
 
-Some screenshots from the Android version of the game:
+All the photos used in the game are my own.
 
-![alt text](screenshot1.jpg "Starting the Game")
-![alt text](screenshot2.jpg "In the Middle of the Game")
-![alt text](screenshot3.jpg "In the Middle of the Game with two Puzzles Facing Upwards")
-![alt text](screenshot4.jpg "The Dialog Panel at the End of the Game")
+Some screenshots from the game:
+
+![alt text](ss_mainmenu.jpg "Main Menu")
+![alt text](ss_gameplay.jpg "Gameplay")
+![alt text](ss_pausemenu.jpg "Pause Menu")
+![alt text](ss_finishscreen.jpg "Finish Screen")
