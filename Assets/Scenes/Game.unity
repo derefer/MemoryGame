@@ -204,7 +204,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1994979539}
-        m_MethodName: OnPause
+        m_MethodName: Pause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -403,7 +403,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1994979539}
-        m_MethodName: OnResume
+        m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 597455789}
   - component: {fileID: 597455788}
   m_Layer: 5
-  m_Name: PanelFinished
+  m_Name: FinishedPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -909,7 +909,7 @@ GameObject:
   - component: {fileID: 671566631}
   - component: {fileID: 671566630}
   m_Layer: 5
-  m_Name: MovesText
+  m_Name: GuessesText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2971,6 +2971,7 @@ GameObject:
   - component: {fileID: 2097405130}
   - component: {fileID: 2097405129}
   - component: {fileID: 2097405128}
+  - component: {fileID: 2097405132}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3062,6 +3063,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2097405132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097405127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55bb0329bc6e66aaadf3a6f474c3969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finishedPanel: {fileID: 597455786}
+  timerText: {fileID: 1021621724}
+  guessesText: {fileID: 671566630}
 --- !u!1001 &2778759563132841172
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3131,11 +3147,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2778759563894608903, guid: 227c656124e9f3a1ba102b29a4948712,
         type: 3}
-      propertyPath: panelFinished
-      value: 
-      objectReference: {fileID: 597455786}
-    - target: {fileID: 2778759563894608903, guid: 227c656124e9f3a1ba102b29a4948712,
-        type: 3}
       propertyPath: panelPaused
       value: 
       objectReference: {fileID: 2042025374}
@@ -3149,26 +3160,5 @@ PrefabInstance:
       propertyPath: panelPuzzleField
       value: 
       objectReference: {fileID: 1775468569}
-    - target: {fileID: 2778759563894608903, guid: 227c656124e9f3a1ba102b29a4948712,
-        type: 3}
-      propertyPath: puzzleField
-      value: 
-      objectReference: {fileID: 1775468570}
-    - target: {fileID: 2778759563894608903, guid: 227c656124e9f3a1ba102b29a4948712,
-        type: 3}
-      propertyPath: timerText
-      value: 
-      objectReference: {fileID: 1021621724}
-    - target: {fileID: 2778759563894608903, guid: 227c656124e9f3a1ba102b29a4948712,
-        type: 3}
-      propertyPath: movesText
-      value: 
-      objectReference: {fileID: 671566630}
-    - target: {fileID: 2778759563894608903, guid: 227c656124e9f3a1ba102b29a4948712,
-        type: 3}
-      propertyPath: backsideSprite
-      value: 
-      objectReference: {fileID: 2634845578367563675, guid: 1d5253f41d3d609768dd7c819075e58f,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 227c656124e9f3a1ba102b29a4948712, type: 3}

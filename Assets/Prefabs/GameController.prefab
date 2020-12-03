@@ -43,14 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc063ab878dfb24b6b0a0050d37c69ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backImage: {fileID: 2634845578367563675, guid: 1d5253f41d3d609768dd7c819075e58f,
+  backsideSprite: {fileID: 2634845578367563675, guid: 1d5253f41d3d609768dd7c819075e58f,
     type: 3}
-  panelFinished: {fileID: 0}
   panelPaused: {fileID: 0}
   panelImage: {fileID: 0}
   panelPuzzleField: {fileID: 0}
-  puzzleField: {fileID: 0}
   buttonPrefab: {fileID: 8286169017705009734, guid: a6bdc0e0b0c6106969263672a4c12a95,
     type: 3}
-  timerText: {fileID: 0}
-  movesText: {fileID: 0}

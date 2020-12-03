@@ -18,6 +18,11 @@ This is the first piece of code I wrote (and adapted) in C#, so it's probably no
 
 All the photos used in the game are my own.
 
+Credits for the font:
+Dikas Studio - Pine Forest
+https://www.dafont.com/de/pine-forest.font
+https://dikasstudio.com/pine-forest
+
 Some screenshots from the game:
 
 ![alt text](ss_mainmenu.jpg "Main Menu")
