@@ -25,7 +25,7 @@ https://dikasstudio.com/pine-forest
 
 Some screenshots from the game:
 
-![alt text](ss_mainmenu.jpg "Main Menu")
-![alt text](ss_gameplay.jpg "Gameplay")
-![alt text](ss_pausemenu.jpg "Pause Menu")
-![alt text](ss_finishscreen.jpg "Finish Screen")
+![alt text](./Misc/MainMenu.jpg "Main Menu")
+![alt text](./Misc/GamePlay.jpg "Gameplay")
+![alt text](./Misc/PauseMenu.jpg "Pause Menu")
+![alt text](./Misc/FinishScreen.jpg "Finish Screen")
